@@ -1,0 +1,15 @@
+{% extends 'main.html'%}
+{% block content %}
+
+<div>
+    <a href="{% url 'home' %}"> Back to home</a>
+    
+    <div>
+        <span>@{{room.host.username}}</span>
+        <h5>{{room.topic}}</h5>
+        <h4>{{room.description}}</h4>
+    </div>
+
+</div>
+
+{% endblock %}

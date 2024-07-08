@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Simple Webpage</title>
+</head>
+
+<body>
+    <header>
+        <h1>Welcome to the Study Bud</h1>
+    </header>
+    <main>
+
+        {% for room in rooms%}
+        <div>
+            <span>@{{room.host.username}}</span>
+            <h5>{{room.id}}--<a href="{% url 'room' room.id%}">{{room.topic}}</a></h5>
+            <h4>{{room.description}}</h4>
+        </div>
+        {% endfor%}
+
+        {% block content%}
+
+
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2024 My Webpage</p>
+
+    </footer>
+</body>
+
+</html>
