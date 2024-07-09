@@ -12,15 +12,6 @@
         <h1>Welcome to the Study Bud</h1>
     </header>
     <main>
-
-        {% for room in rooms%}
-        <div>
-            <span>@{{room.host.username}}</span>
-            <h5>{{room.id}}--<a href="{% url 'room' room.id%}">{{room.topic}}</a></h5>
-            <h4>{{room.description}}</h4>
-        </div>
-        {% endfor%}
-
         {% block content%}
 
 
