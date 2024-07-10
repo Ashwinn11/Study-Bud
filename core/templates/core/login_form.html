@@ -3,14 +3,34 @@
 
 {% block content %}
 
-<form method="POST" action="">
-    {% csrf_token %}
-    <label>Username:</label>
-    <input type="text" placeholder="Enter username" name="username">
-    <label>Password:</label>
-    <input type="pasword" placeholder="Enter password" name="password">
-    <input type="submit" value="submit">
+{% if type != 'register' %}
+<div>
+    <form method="POST" action="">
+        {% csrf_token %}
+        <label>Username:</label>
+        <input type="text" placeholder="Enter username" name="username">
+        <label>Password:</label>
+        <input type="pasword" placeholder="Enter password" name="password">
+        <input type="submit" value="Login">
+        <p>Haven't signup up yet?</p>
+        <a href="{% url 'register' %}">Sign up</a>
 
-</form>
+    </form>
+</div>
+
+{% else %}
+
+<div>
+    <form method="POST" action="">
+        {% csrf_token %}
+        {{form.as_p}}
+        <input type="submit" value="Register">
+        <p>Already signup?</p>
+        <a href="{% url 'login' %}">Log in</a>
+
+    </form>
+</div>
+
+{% endif %}
 
 {% endblock %}

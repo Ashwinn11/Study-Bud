@@ -2,17 +2,23 @@
 {% block content %}
 
 <div>
-    <h4>
-        <a href="{% url 'create-room' %}">Create new room</a>
-    </h4>
+    <h3> {{room.name}}</h3>
+    <p>{{room.description}}</p>
+</div>
+<div class="comment-wrapper">
+
+    <h3>Conversation</h3>
+    <hr>
+
+    {% for msg in message %}
+
     <div>
-        <div>
-            <h5>@{{room.host.username}}</h5>
-            <h4> {{room.topic}}</h4>
-            <h3>{{room.id}}) {{room.name}}</h3>
-            <p>{{room.description}}</p>
-        </div>
+        <small>@{{msg.user}} {{msg.created|timesince}} ago</small>
+        <p>{{msg.body}}</p>
     </div>
+    <hr>
+
+    {% endfor %}
 
 </div>
 
