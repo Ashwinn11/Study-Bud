@@ -12,9 +12,19 @@
         <h1>Welcome to the Study Bud</h1>
     </header>
     <main>
-        {% block content%}
 
+        {% include 'navbar.html' %}
 
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li>{{message}}</li>
+            {% endfor %}
+
+        </ul>
+        {% endif %}
+
+        {% block content %}
         {% endblock %}
     </main>
 
