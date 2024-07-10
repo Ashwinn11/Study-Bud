@@ -8,7 +8,8 @@
     <div>
         <div>
             <h5>@{{room.host.username}}</h5>
-            <h3>{{room.id}}--<a href="{% url 'room' room.id%}">{{room.topic}}</a></h3>
+            <h4> {{room.topic}}</h4>
+            <h3>{{room.id}}) {{room.name}}</h3>
             <p>{{room.description}}</p>
         </div>
     </div>
