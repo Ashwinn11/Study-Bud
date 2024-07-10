@@ -16,23 +16,24 @@ def home(request):
     rooms = Rooms.objects.filter(Q(topic__name__icontains=q) | Q(name__icontains=q) | Q(description__icontains=q))
     topics = Topic.objects.all()
     room_count = rooms.count()
-    context={'rooms':rooms,'topics':topics,'room_count':room_count}
+    room_msg=Messages.objects.all()
+    context={'rooms':rooms,'topics':topics,'room_count':room_count,'room_msg':room_msg}
     return render(request,'core/home.html',context)
 
 def rooms(request,pk):
     rooms = Rooms.objects.get(id=pk)
-    message=Messages.objects.filter(room=rooms).order_by('-created')
-
+    message=Messages.objects.filter(room=rooms)
+    participants=rooms.participants.all()
     if request.method=="POST":
         if request.POST.get('body')=="":
             messages.error(request,'The message cannot be empty')
             return redirect('room',pk=rooms.id)
         else:
             body = Messages.objects.create(user=request.user,body=request.POST.get('body'),room=rooms)
-            body.save()
+            rooms.participants.add(request.user)
             return redirect('room',pk=rooms.id)
 
-    context={'room':rooms,'message':message}
+    context={'room':rooms,'message':message,'participants':participants}
     return render(request,'core/room.html',context)
 
 
@@ -103,3 +104,12 @@ def registerUser(request):
     
     context={'type':requestType,'form':form}
     return render(request,'core/login_form.html',context)
+
+def deleteMessage(request,pk):
+    message = Messages.objects.get(id=pk)
+    roomId=message.room.id
+    if request.method=='POST':
+        message.delete()
+        return redirect('room',pk=roomId)
+    context={'obj':message}
+    return render(request,'core/delete.html',context)
