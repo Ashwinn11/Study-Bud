@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.db.models import Q
 from django.contrib import messages
 from .models import Rooms,Topic
-from django.contrib.auth import authenticate,login
+from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.models import User
 from .forms import RoomForm
 
@@ -66,3 +66,7 @@ def loginPage(request):
             messages.error(request,'user does not exist')
     context={}
     return render(request,'core/login_form.html',context)
+
+def logoutUser(request):
+    logout(request)
+    return redirect('home')
