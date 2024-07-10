@@ -22,9 +22,16 @@ def home(request):
 def rooms(request,pk):
     rooms = Rooms.objects.get(id=pk)
     message=Messages.objects.filter(room=rooms).order_by('-created')
+
     if request.method=="POST":
-        body = Messages.objects.create(user=request.user,body=request.POST.get('body'),room=rooms)
-        body.save()
+        if request.POST.get('body')=="":
+            messages.error(request,'The message cannot be empty')
+            return redirect('room',pk=rooms.id)
+        else:
+            body = Messages.objects.create(user=request.user,body=request.POST.get('body'),room=rooms)
+            body.save()
+            return redirect('room',pk=rooms.id)
+
     context={'room':rooms,'message':message}
     return render(request,'core/room.html',context)
 
