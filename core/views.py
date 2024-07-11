@@ -77,6 +77,16 @@ def registerUser(request):
     context={'type':requestType,'form':form}
     return render(request,'core/login_form.html',context)
 
+
+def userProfile(request,pk):
+
+    user = User.objects.get(id=pk)
+    rooms=Rooms.objects.filter(host=user)
+    room_msg = Messages.objects.filter(user=user)
+    topics= Topic.objects.all()
+    context={'user':user,'rooms':rooms,"room_msg":room_msg,"topics":topics}
+    return render(request,'core/profile.html',context)
+
 @login_required(login_url='login')
 def createRoom(request):
 
@@ -84,7 +94,9 @@ def createRoom(request):
     if request.method=='POST':
         form=RoomForm(request.POST)
         if form.is_valid():
-            form.save()
+            room=form.save(commit=False)
+            room.host=request.user
+            room.save()
             return redirect('home')
     context={'form':form}
     return render(request,'core/room_form.html',context)
@@ -112,7 +124,7 @@ def deleteRoom(request,pk):
     return render(request,'core/delete.html',{'obj':room})
 
 def deleteMessage(request,pk):
-    
+
     message = Messages.objects.get(id=pk)
     roomId=message.room.id
     if request.method=='POST':
