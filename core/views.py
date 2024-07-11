@@ -16,11 +16,12 @@ def home(request):
     rooms = Rooms.objects.filter(Q(topic__name__icontains=q) | Q(name__icontains=q) | Q(description__icontains=q))
     topics = Topic.objects.all()
     room_count = rooms.count()
-    room_msg=Messages.objects.all()
+    room_msg=Messages.objects.filter(Q(room__topic__name__icontains=q))
     context={'rooms':rooms,'topics':topics,'room_count':room_count,'room_msg':room_msg}
     return render(request,'core/home.html',context)
 
 def rooms(request,pk):
+
     rooms = Rooms.objects.get(id=pk)
     message=Messages.objects.filter(room=rooms)
     participants=rooms.participants.all()
@@ -36,39 +37,8 @@ def rooms(request,pk):
     context={'room':rooms,'message':message,'participants':participants}
     return render(request,'core/room.html',context)
 
-
-@login_required(login_url='login')
-def createRoom(request):
-    form=RoomForm()
-    if request.method=='POST':
-        form=RoomForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('home')
-    context={'form':form}
-    return render(request,'core/room_form.html',context)
-
-@login_required(login_url='login')
-def updateRoom(request,pk):
-    room =Rooms.objects.get(id=pk)
-    form = RoomForm(instance=room)
-    if request.method=="POST":
-        form = RoomForm(request.POST,instance=room)
-        if form.is_valid():
-            form.save()
-            return redirect('home')
-    context={'form':form}    
-    return render(request,'core/room_form.html',context)
-
-@login_required(login_url='login')
-def deleteRoom(request,pk):
-    room = Rooms.objects.get(id=pk)
-    if request.method=='POST':
-        room.delete()
-        return redirect('home')
-    return render(request,'core/delete.html',{'obj':room})
-
 def loginPage(request):
+
     if request.user.is_authenticated:
         return redirect('home')
     if request.method=="POST":
@@ -85,10 +55,12 @@ def loginPage(request):
     return render(request,'core/login_form.html',context)
 
 def logoutUser(request):
+
     logout(request)
     return redirect('home')
 
 def registerUser(request):
+
     requestType='register'
     form = UserCreationForm()
     if request.method=="POST":
@@ -105,7 +77,42 @@ def registerUser(request):
     context={'type':requestType,'form':form}
     return render(request,'core/login_form.html',context)
 
+@login_required(login_url='login')
+def createRoom(request):
+
+    form=RoomForm()
+    if request.method=='POST':
+        form=RoomForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    context={'form':form}
+    return render(request,'core/room_form.html',context)
+
+@login_required(login_url='login')
+def updateRoom(request,pk):
+
+    room =Rooms.objects.get(id=pk)
+    form = RoomForm(instance=room)
+    if request.method=="POST":
+        form = RoomForm(request.POST,instance=room)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    context={'form':form}    
+    return render(request,'core/room_form.html',context)
+
+@login_required(login_url='login')
+def deleteRoom(request,pk):
+
+    room = Rooms.objects.get(id=pk)
+    if request.method=='POST':
+        room.delete()
+        return redirect('home')
+    return render(request,'core/delete.html',{'obj':room})
+
 def deleteMessage(request,pk):
+    
     message = Messages.objects.get(id=pk)
     roomId=message.room.id
     if request.method=='POST':
