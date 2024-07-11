@@ -3,37 +3,32 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Simple Webpage</title>
-    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'style/main.css' %}" >
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon" />
+    <link rel="stylesheet" href="{% static 'style/style.css' %}" />
+    <title>StudyBuddy - Find study partners around the world!</title>
 </head>
 
 <body>
-    <header>
-        <h1>Welcome to the Study Bud</h1>
-    </header>
-    <main>
+    
 
-        {% include 'navbar.html' %}
+    {% include 'navbar.html' %}
 
-        {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-            <li>{{message}}</li>
-            {% endfor %}
 
-        </ul>
-        {% endif %}
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li>{{message}}</li>
+        {% endfor %}
 
-        {% block content %}
-        {% endblock %}
-    </main>
+    </ul>
+    {% endif %}
 
-    <footer>
-        <p>&copy; 2024 My Webpage</p>
-
-    </footer>
+    {% block content %}
+    {% endblock %}
+    <script src="{% static 'js/script.js' %}"></script>
 </body>
 
 </html>
