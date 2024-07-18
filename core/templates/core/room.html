@@ -1,5 +1,5 @@
 {% extends 'main.html' %}
-
+{% load static %}
 {% block content %}
 <main class="profile-page layout layout--2">
   <div class="container">
@@ -79,7 +79,7 @@
                 <div class="thread__author">
                   <a href="{% url 'user-profile' msg.user.id %}" class="thread__authorInfo">
                     <div class="avatar avatar--small">
-                      <img src="{{message.user.avatar.url}}" />
+                      <img src="{{msg.user.avatar.url}}" />
                     </div>
                     <span>@{{msg.user.username}}</span>
                   </a>
@@ -137,5 +137,5 @@
     <!--  End -->
   </div>
 </main>
-<script src="script.js"></script>
+<script src="{% static 'js/script.js' %}"></script>
 {% endblock content %}
